@@ -322,8 +322,14 @@ public class PluginMap extends MyPlugin {
       @Override
       public void onResult(final PluginResult pluginResult) {
         if (finalCameraBounds != null && ANIMATE_CAMERA_DONE.equals(pluginResult.getStrMessage())) {
-          CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(finalCameraBounds, (int)density);
-          map.moveCamera(cameraUpdate);
+          CameraUpdate cameraUpdate;
+          try{
+            cameraUpdate = CameraUpdateFactory.newLatLngBounds(finalCameraBounds, (int)density);
+            map.moveCamera(cameraUpdate);
+          }catch(IllegalStateException e){
+            cameraUpdate = CameraUpdateFactory.newLatLngBounds(finalCameraBounds, 150, 150, (int)density);
+            map.moveCamera(cameraUpdate);
+          }
 
 
           Builder builder = CameraPosition.builder();
